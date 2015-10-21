@@ -6,10 +6,9 @@ import java.awt.geom.*;
  * Class Canvas - a class to allow for simple graphical 
  * drawing on a canvas.
  * 
- * @author Michael Kölling (mik)
- * @author Bruce Quig
+ * @author Dean Thomas
  *
- * @version 2011.07.31
+ * @version 2015.10.23
  */
 
 public class Canvas
@@ -70,8 +69,6 @@ public class Canvas
     public void setVisible(boolean visible)
     {
         if(graphic == null) {
-            // first time: instantiate the offscreen image and fill it with
-            // the background color
             Dimension size = canvas.getSize();
             canvasImage = canvas.createImage(size.width, size.height);
             graphic = (Graphics2D)canvasImage.getGraphics();

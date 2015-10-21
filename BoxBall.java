@@ -9,24 +9,26 @@ import java.awt.geom.*;
  *
  * This movement can be initiated by repeated calls to the "move" method.
  * 
- * @author Dean Thomas
+ * @ author Dean Thomas
  *
  * @version 2015.10.23
  */
 
-public class BouncingBall
+public class BoxBall
 {
     private static final int GRAVITY = 3;  // effect of gravity
-
-    private int ballDegradation = 2;
     private Ellipse2D.Double circle;
     private Color color;
     private int diameter;
-   private int xPosition;
+    private int xPosition;
     private int yPosition;
-    private final int groundPosition;  
+    private final int bottomwall;      // y position of ground
+    private final int topwall;
+    private final int leftwall;
+    private final int rightwall;   
     private Canvas canvas;
-   private int ySpeed = 1;                // initial downward speed
+    private int ySpeed = 4;                // initial downward speed
+    private int xSpeed = 7;
 
     /**
      * Constructor for objects of class BouncingBall
@@ -37,17 +39,19 @@ public class BouncingBall
      * @param ballColor  the color of the ball
      * @param groundPos  the position of the ground (where the wall will bounce)
      * @param drawingCanvas  the canvas to draw this ball on
-    */
-    public BouncingBall(int xPos, int yPos, int ballDiameter, Color ballColor,
-                         int groundPos, Canvas drawingCanvas)
+     */
+    public BoxBall(int xPos, int yPos, int ballDiameter, Color ballColor,
+                          Canvas drawingCanvas)
     {
         xPosition = xPos;
         yPosition = yPos;
-       color = ballColor;
+        color = ballColor;
         diameter = ballDiameter;
-        groundPosition = groundPos;
         canvas = drawingCanvas;
- 
+        leftwall = 0;
+        rightwall = 600;
+        topwall = 0;
+        bottomwall = 500;
     }
 
     /**
@@ -72,16 +76,24 @@ public class BouncingBall
      **/
     public void move()
     {
+        erase();
 
-        ySpeed += GRAVITY;
         yPosition += ySpeed;
-        xPosition +=4; 
+        xPosition += xSpeed;
 
-        if(yPosition >= (groundPosition - diameter) && ySpeed > 0) {
-             yPosition = (int)(groundPosition - diameter);
-             ySpeed = -ySpeed + ballDegradation; 
-         }
-
+        if (xPosition < leftwall){
+                xSpeed = -xSpeed;
+            }
+        if (xPosition > rightwall){
+                xSpeed = -xSpeed;
+            }
+            if (yPosition < topwall){
+                ySpeed = -ySpeed;
+            }
+        if (yPosition > bottomwall){
+                ySpeed = -ySpeed;
+            }
+        // draw again at new position
         draw();
     }    
 
@@ -91,13 +103,5 @@ public class BouncingBall
     public int getXPosition()
     {
         return xPosition;
-    }
-
-    /**
-     * return the vertical position of this ball
-     */
-    public int getYPosition()
-    {
-        return yPosition;
     }
 }
